@@ -106,9 +106,5 @@ resource "aws_lambda_function" "notify_slack" {
     ]
   }
 
-  labels = {
-    my-label = data.archive_file.init.output_md5
-  }
-  
   depends_on = [aws_cloudwatch_log_group.lambda]
 }
