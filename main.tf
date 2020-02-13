@@ -68,7 +68,7 @@ data "archive_file" "notify_slack" {
 
   type        = "zip"
   source_file = data.null_data_source.lambda_file.outputs.filename
-  output_path = data.null_data_source.lambda_archive.outputs.filename
+  output_path = "${path.module}/functions/${uuid()}.zip"
 }
 
 resource "aws_lambda_function" "notify_slack" {
@@ -106,5 +106,9 @@ resource "aws_lambda_function" "notify_slack" {
     ]
   }
 
+  labels = {
+    my-label = data.archive_file.init.output_md5
+  }
+  
   depends_on = [aws_cloudwatch_log_group.lambda]
 }
